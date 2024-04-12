@@ -6,7 +6,7 @@ use market::BinMarket;
 use option::{crr_pricer, SpreadOption, SpreadType, VanillaOption, VanillaType};
 
 fn main() {
-    println!("Hello, Binomial Market!");
+    println!("Hello, Binomial Market CRR Pricer!");
 
     // Fetch command-line arguments.
     let mut args: Vec<f64> = Vec::with_capacity(3);
