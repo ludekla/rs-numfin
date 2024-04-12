@@ -1,18 +1,31 @@
+use std::env;
+
 mod market;
 mod option;
-
 use market::BinMarket;
 use option::{crr_pricer, SpreadOption, SpreadType, VanillaOption, VanillaType};
 
 fn main() {
     println!("Hello, Binomial Market!");
 
-    let bm = BinMarket::new(100.0, -0.01, 0.01, 0.005);
+    // Fetch command-line arguments.
+    let mut args: Vec<f64> = Vec::with_capacity(3);
+    for arg in env::args() {
+        if let Ok(val) = arg.parse::<f64>() {
+            args.push(val);
+        }
+    }
+
+    let spot = 100.0;
+    let (dtick, utick) = (-0.01, 0.01);
+    let rate = 0.005;
+
+    let bm = BinMarket::new(spot, dtick, utick, rate);
     println!("{:?}", bm);
 
-    let lo = 100.0;
-    let hi = 200.0;
-    let expiry: usize = 100;
+    let expiry = args[0] as usize;
+    let lo = args[1];
+    let hi = args[2];
 
     let call = VanillaOption::new(VanillaType::Call, expiry, lo);
     println!("Call {:9.5}", crr_pricer(&bm, &call));
